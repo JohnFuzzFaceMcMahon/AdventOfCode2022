@@ -1,3 +1,6 @@
+# john@mcmahon.engineering
+# https://github.com/JohnFuzzFaceMcMahon/AdventOfCode2022
+# Day01-P2.awk
 BEGIN {
     ElfNumber=1
 }
