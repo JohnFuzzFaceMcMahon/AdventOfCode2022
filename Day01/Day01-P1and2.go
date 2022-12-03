@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	// "rsc.io/quote"
@@ -23,7 +24,6 @@ func main() {
 	// fmt.Println(quote.Go())
 	// fmt.Println("")
 
-	fmt.Println("(go) Day 1 Part 1")
 	var s []int
 
 	// fmt.Println("----------")
@@ -66,22 +66,19 @@ func main() {
 
 	// printSlice(s)
 
-	// https://stackoverflow.com/questions/34259800/is-there-a-built-in-min-function-for-a-slice-of-int-arguments-or-a-variable-numb
-	max := s[0]
-	maxElf := 0
-	for i := 1; i < len(s); i++ {
-		if max < s[i] {
-			max = s[i]
-			// cheesy hack because of difference in indexes between awk and go
-			maxElf = i + 1
-		}
-	}
+	// https://www.geeksforgeeks.org/how-to-sort-a-slice-of-ints-in-golang/
+	sort.Ints(s)
+	max := s[len(s)-1]
+	topThree := s[len(s)-1] + s[len(s)-2] + s[len(s)-3]
+	// printSlice(s)
 	// fmt.Println("Max Elf")
 	// fmt.Println(maxElf)
 	// fmt.Println("Value")
 	// fmt.Println(max)
-	fmt.Printf("(go) Elf %d has %d calories\n", maxElf, max)
-
+	fmt.Println("(go) Day 1 Part 1")
+	fmt.Printf("(go) Single elf max calories is %d\n", max)
+	fmt.Println("(go) Day 1 Part 2")
+	fmt.Printf("(go) Top 3 Elves have %d calories\n", topThree)
 }
 
 func printSlice(s []int) {

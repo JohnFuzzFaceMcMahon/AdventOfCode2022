@@ -19,31 +19,44 @@ Program Output
 % awk -f Day01-P1.awk test.data.txt 
 Elf 4 has 24000 calories
 
-% go run Day01-P1.go <test.data.txt 
+% go run Day01-P1and2.go <test.data.txt
 (go) Day 1 Part 1
-(go) Elf 4 has 24000 calories
+(go) Single elf max calories is 24000
+(go) Day 1 Part 2
+(go) Top 3 Elves have 45000 calories
 
 - Part 2 with Test Data
 
 % awk -f Day01-P2.awk test.data.txt
 Top three elves are carrying 45000 calories
 
-(No P2 go program yet)
+% go run Day01-P1and2.go <test.data.txt
+(go) Day 1 Part 1
+(go) Single elf max calories is 24000
+(go) Day 1 Part 2
+(go) Top 3 Elves have 45000 calories
 
 - Part 1 with Input Data
 
 % awk -f Day01-P1.awk input.data.txt
 Elf 180 has 66719 calories
 
-% awk -f Day01-P1.awk input.data.txt
-Elf 180 has 66719 calories
+% go run Day01-P1and2.go <input.data.txt
+(go) Day 1 Part 1
+(go) Single elf max calories is 66719
+(go) Day 1 Part 2
+(go) Top 3 Elves have 198551 calories
 
 - Part 2 with Input Data
 
 % awk -f Day01-P2.awk input.data.txt
 Top three elves are carrying 198551 calories
 
-(No P2 go program yet)
+% go run Day01-P1and2.go <input.data.txt
+(go) Day 1 Part 1
+(go) Single elf max calories is 66719
+(go) Day 1 Part 2
+(go) Top 3 Elves have 198551 calories
 
 -----
 Stats
