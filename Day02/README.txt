@@ -6,7 +6,7 @@
 Dumb Move Of The Day
 --------------------
 
-Do you need to sanitize your inputs with gsub()
+When running under WSL you probably need to sanitize your inputs with gsub()
 
 --------------
 Program Output
