@@ -2,6 +2,12 @@
 # https://github.com/JohnFuzzFaceMcMahon/AdventOfCode2022
 # Day01
 
+-------------------------------
+What did I misunderstand today?
+-------------------------------
+
+When you use asort() the highest values are at the bottom of the array NOT the top!
+
 --------------
 Program Output
 --------------
