@@ -30,7 +30,7 @@ Group 1 common element is r (18)
 Group 4 common element is Z (52)
 Total Priority: 70
 
-% awk -f Day03-P1.awk input.data.txt | head
+% awk -f Day03-P1.awk input.data.txt
 Duplicate w in 1
 Duplicate Q in 2
 Duplicate d in 3
