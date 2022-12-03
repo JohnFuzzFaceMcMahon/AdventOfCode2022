@@ -16,7 +16,7 @@ for ( i ) {
 Program Output
 --------------
 
-% % awk -f Day03-P1.awk test.data.txt
+% awk -f Day03-P1.awk test.data.txt
 Duplicate p in 1
 Duplicate L in 2
 Duplicate P in 3
