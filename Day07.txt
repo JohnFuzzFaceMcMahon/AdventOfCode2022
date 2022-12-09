@@ -1,5 +1,11 @@
 I finished Day07 successfully.
 
-The method I used is SO AWFUL that I'm considering rewriting it in total before uploading it.
+The method I used is TOTALLY AWFUL.
+
+Do not look in the Day07 directory.
+
+You have been warned.
+
+I might rewrite this if I can get caught up.
 
 Stay tuned.
