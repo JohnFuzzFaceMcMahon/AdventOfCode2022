@@ -1,105 +1,142 @@
-# https://unix.stackexchange.com/questions/220588/how-to-take-the-absolute-value-using-awk
-function abs(v) {return v < 0 ? -v : v}
-
-function ShowPlot() {
-    printf("   ")
-    for (m=0;m<=MR;m++) printf("%s  ",m)
+function ShowGrid() {
+    rc=0
+    printf("    |")
+    for (r=0;r<=MR;r++) {
+        printf("%3s|",r)
+    }
     print ""
-    printf("  +")
-    for (m=0;m<=MR;m++) printf("--+")
+    printf("    +")
+    for (r=0;r<=MR;r++) {
+        printf("---+")
+    }
     print ""
-    for (j=MU;j>-1;j--) {
-        for (k=0;k<=MR;k++) {
-            Contents=""
-            if (k==0) { printf("%s |",j) }
-            if ((k==HR)&&(j==HU)) {
-                Contents="H";
-            }
-            if ((k==TR)&&(j==TU)) {
-                Contents=Contents "T";
-            }
-            if (Contents=="") Contents=".."
-            printf("%2s|",Contents)
+    for (u=MU;u>-1;u--) {
+        printf("%3s |",u)
+        for (r=0;r<=MR;r++) {
+            Content="";
+            if ((HU==u) && (HR==r)) { Content="H" }
+            if ((TU==u) && (TR==r)) { Content=Content "T" }
+            if (TOUCH[u "-" r]==1) { Content=Content "#"; rc++}
+            if ( Content=="" ) { Content="..." }
+            printf("%3s|",Content)
         }
-        print "";
-        printf("  +")
-        for (m=0;m<=MR;m++) printf("--+")
+        print ""
+        printf("    +")
+        for (r=0;r<=MR;r++) {
+            printf("---+")
+        }
         print ""
     }
+    return rc
+}
+
+function MoveTail() {
+
+    DidSomething=1
+
+    for (; DidSomething==1 ;) {
+
+        DidSomething=0
+
+        DeltaU=HU-TU
+        DeltaR=HR-TR
+
+        if (Direction=="U") {
+            if (DeltaU>1)   {
+                TU=TU+1; DidSomething=1
+                if (DeltaR>0)   { TR=TR+1; DidSomething=1 }
+                if (DeltaR<0)   { TR=TR-1; DidSomething=1 }
+            }
+        }
+        if (Direction=="D") {
+            if (DeltaU<-1)   {
+                TU=TU-1; DidSomething=1
+                if (DeltaR>0)   { TR=TR+1; DidSomething=1 }
+                if (DeltaR<0)   { TR=TR-1; DidSomething=1 }
+            }
+        }
+        if (Direction=="R") {
+            if (DeltaR>1)   {
+                TR=TR+1; DidSomething=1
+                if (DeltaU>0)   { TU=TU+1; DidSomething=1 }
+                if (DeltaU<0)   { TU=TU-1; DidSomething=1 }
+            }
+        }
+        if (Direction=="L") {
+            if (DeltaR<-1)   {
+                TR=TR-1; DidSomething=1
+                if (DeltaU>0)   { TU=TU+1; DidSomething=1 }
+                if (DeltaU<0)   { TU=TU-1; DidSomething=1 }
+            }
+        }
+        TOUCH[TU "-" TR]=1
+        print "Tail",TU,TR
+
+        # print "MoveTail"
+        # ShowGrid()
+
+    }
+    
 }
 
 BEGIN {
-    # Head, number of steps up and number of steps right
-    HU=0
-    HR=0
-    # Tail, same thing
-    TU=0
-    TR=0
-    # Max Of U and R 
-    MU=0
-    MR=0
+    # Origin is lower left
+    # Head
+    HU=100
+    HR=100
+    # Tail
+    TU=HU
+    TR=HR
+    # Max distance from Origin
+    MU=HU+10
+    MR=HR+10
 }
 
 {
-    print NR " Command " $0;
-    ShowPlot()
-    Direction=$1
-    Amount=$2
-    if ((Direction=="R")||(Direction=="L")) {
-        for (i=1;i<=Amount;i++) {
-            if (Direction=="R") {
-                HR=HR+1
-                if (HR>MR) MR=HR
-            } else {
-                HR=HR-1
-            }
+
+    # print "---"
+    print NR,$0
+    # ShowGrid()
+
+    Direction=$1; 
+    Len=$2; 
+
+    TOUCH[TU "-" TR]=1
+    print "Head Start",HU,HR
+    for (i=1;i<=Len;i++) {
+        if (Direction=="U") {
+            HU=HU+1
         }
+        if (Direction=="D") {
+            HU=HU-1
+        }
+        if (Direction=="R") {
+            HR=HR+1
+        }
+        if (Direction=="L") {
+            HR=HR-1
+        }
+        print "Head During",HU,HR
+        MoveTail()
+        # print "X",HU,HR;
     }
-    if ((Direction=="U")||(Direction=="D")) {
-        for (i=1;i<=Amount;i++) {
-            if (Direction=="U") {
-                HU=HU+1
-                if (HU>MU) MU=HU
-            } else {
-                HU=HU-1
-            }
-        }
+    print "Head End",HU,HR
+    BLAH=""
+    if ( (HU<0)||(HR<0) ) {
+        BLAH = "Origin Error " HU " " HR
+        exit 1;
     }
-    VISITED[TR "-" TU]=1
-    KeepProcessing=1
-    for (; KeepProcessing==1 ;) {
-        KeepProcessing=0
-        DeltaU=abs(HU-TU)
-        DeltaR=abs(HR-TR)
-        if ( DeltaU>1 ) {
-            if (Direction=="U") { TU=TU+1 }
-            if (Direction=="D") { TU=TU-1 }
-            KeepProcessing=1
-        }
-        if ( DeltaR>1 ) {
-            if (Direction=="R") { TR=TR+1 }
-            if (Direction=="L") { TR=TR-1 }
-            KeepProcessing=1
-        }
-        VISITED[TR "-" TU]=1
-    }
-    print "END"
-    ShowPlot()
+    TOUCH[TU "-" TR]=1
+
+    if (HR>MR) { MR=HR }
+    if (HU>MU) { MU=HU }
+
+    # print "Final"
+    # ShowGrid()
 
 }
 
 END {
-    for (n=MU;n>-1;n--) {
-        for (p=0;p<=MR;p++) {
-            if ( VISITED[p "-" n]==1) {
-                printf("#")
-                TOTAL++
-            } else {
-                printf(".")
-            }
-        }
-        print ""
-    }
-    print "RESULT: " TOTAL
-
+    foo = ShowGrid()
+    print "RESULT: " foo " " BLAH
 }
